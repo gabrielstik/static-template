@@ -1,1 +1,1 @@
-# PHP-static-template
+# PHP-template
