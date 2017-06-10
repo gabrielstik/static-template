@@ -24,9 +24,7 @@ gulp.task('default', ['watch'], () => {})
 // SASS to SCSS, compress & prefix styles
 gulp.task('styles', () => {
   return gulp.src(`${config.src}styles/*.scss`)
-  .pipe(gulp_plumber({
-    errorHandler: gulp_notify.onError('Styles error:  <%= error.message %>')
-  }))
+  .pipe(gulp_plumber({errorHandler: gulp_notify.onError('Styles error:  <%= error.message %>')}))
   .pipe(gulp_sourcemaps.init())
   .pipe(gulp_sass({
     outputStyle: 'compressed'}).on('error', gulp_sass.logError))
@@ -55,7 +53,7 @@ gulp.task('scripts', () => {
 // Minify css libraries
 gulp.task('libraries', () => {
   return gulp.src(`${config.src}styles/libraries/*.css`)
-  .pipe(gulp_plumber({errorHandler: gulp_notify.onError('STYLES Erro  <%= error.message %>')}))
+  .pipe(gulp_plumber({errorHandler: gulp_notify.onError('Libraries error  <%= error.message %>')}))
   .pipe(gulp_sourcemaps.init())
   .pipe(gulp_cssnano())
   .pipe(gulp_sourcemaps.write())
