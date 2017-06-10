@@ -39,14 +39,13 @@ gulp.task('styles', () => {
 
 // Concat, minify & babel (ES6 to ES5)
 gulp.task('scripts', () => {
-  return gulp.src(`${config.src}js/*.js`)
-  .pipe(gulp_plumber({
-    errorHandler: gulp_notify.onError("Scripts error: <%= error.message %>")}))
+  return gulp.src(`${config.src}scripts/*.js`)
+  .pipe(gulp_plumber({errorHandler: gulp_notify.onError("Scripts error: <%= error.message %>")}))
   .pipe(gulp_sourcemaps.init())
-  .pipe(gulp_uglify())
   .pipe(gulp_concat('main.min.js'))
   .pipe(gulp_sourcemaps.write())
   .pipe(gulp_babel({presets: ['es2015']}))
+  .pipe(gulp_uglify())
   .pipe(gulp.dest(`${config.assets}js`))
 })
 
@@ -67,6 +66,6 @@ gulp.task('libraries', () => {
 
 // Wath changes
 gulp.task('watch', ['styles', 'scripts', 'libraries'], () => {
-  gulp.watch(`${config.src}scss/**/*.scss`, ["sass"])
-  gulp.watch(`${config.src}js/**/*.js`, ["javascript"])
+  gulp.watch(`${config.src}styles/**/*.scss`, ["styles"])
+  gulp.watch(`${config.src}scripts/**/*.js`, ["scripts"])
 })
