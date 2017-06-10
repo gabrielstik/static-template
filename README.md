@@ -25,8 +25,10 @@ Then run it using `gulp`.
 ## Usage
 
 Your website folder is **/dist**.
+
 In assets you will find your minified and concatened styles and scripts. Don't edit them in that directory!
 Scripts & styles have to be edited in **/src** which is the directory where Gulp watches: they will be edited and copied to **/dist/assets**.
+
 As a result you have a complete & beautified website in **/dist** so the only thing you have to do is open your index in your browser.
 
 :warning: Make sure that Gulp is running when you edit your website.
