@@ -1,1 +1,3 @@
-# PHP-template
+# static-template
+
+Work in progress.
