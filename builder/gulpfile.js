@@ -18,12 +18,14 @@ const config = {
   assets: '../dist/assets/'
 }
 
+// Watch by default
 gulp.task('default', ['watch'], () => {})
 
-gulp.task('sass', () => {
-  return gulp.src(`${config.src}scss/*.scss`)
+// SASS to SCSS, compress & prefix styles
+gulp.task('styles', () => {
+  return gulp.src(`${config.src}styles/*.scss`)
   .pipe(gulp_plumber({
-    errorHandler: gulp_notify.onError('SASS Erro  <%= error.message %>')
+    errorHandler: gulp_notify.onError('Styles error:  <%= error.message %>')
   }))
   .pipe(gulp_sourcemaps.init())
   .pipe(gulp_sass({
@@ -37,8 +39,22 @@ gulp.task('sass', () => {
   .pipe(gulp.dest(`${config.assets}css`))
 })
 
-gulp.task('styles', () => {
-  return gulp.src(`${config.src}styles/*.css`)
+// Concat, minify & babel (ES6 to ES5)
+gulp.task('scripts', () => {
+  return gulp.src(`${config.src}js/*.js`)
+  .pipe(gulp_plumber({
+    errorHandler: gulp_notify.onError("Scripts error: <%= error.message %>")}))
+  .pipe(gulp_sourcemaps.init())
+  .pipe(gulp_uglify())
+  .pipe(gulp_concat('main.min.js'))
+  .pipe(gulp_sourcemaps.write())
+  .pipe(gulp_babel({presets: ['es2015']}))
+  .pipe(gulp.dest(`${config.assets}js`))
+})
+
+// Minify css libraries
+gulp.task('libraries', () => {
+  return gulp.src(`${config.src}styles/libraries/*.css`)
   .pipe(gulp_plumber({errorHandler: gulp_notify.onError('STYLES Erro  <%= error.message %>')}))
   .pipe(gulp_sourcemaps.init())
   .pipe(gulp_cssnano())
@@ -51,19 +67,8 @@ gulp.task('styles', () => {
   .pipe(gulp.dest(`${config.assets}css`))
 })
 
-gulp.task('javascript', () => {
-  return gulp.src(`${config.src}js/*.js`)
-  .pipe(gulp_plumber({
-    errorHandler: gulp_notify.onError("JS Error: <%= error.message %>")}))
-  .pipe(gulp_sourcemaps.init())
-  .pipe(gulp_uglify())
-  .pipe(gulp_concat('main.min.js'))
-  .pipe(gulp_sourcemaps.write())
-  .pipe(gulp_babel({presets: ['es2015']}))
-  .pipe(gulp.dest(`${config.assets}js`))
-})
-
-gulp.task('watch', ['sass', 'javascript'], () => {
+// Wath changes
+gulp.task('watch', ['styles', 'scripts', 'libraries'], () => {
   gulp.watch(`${config.src}scss/**/*.scss`, ["sass"])
   gulp.watch(`${config.src}js/**/*.js`, ["javascript"])
 })
