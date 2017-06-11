@@ -1,6 +1,6 @@
 # static-template
 
-Here's my web static template, working with Gulp.
+Here's my web static template, working with Gulp 3.9.
 
 #### When to use it ?
 You should use it for a simple HTML website, or as a template for a PHP website. For example, you can drag & drop my [rooting](https://github.com/gabrielstik/rooting) project into the `/dist` directory to have a working dynamic template.
@@ -15,6 +15,10 @@ You should use it for a simple HTML website, or as a template for a PHP website.
 * Minifies & concat styles
 * Converts SASS/SCSS to CSS
 * Minifies styles libraries
+
+#### Libraries
+* Font-Awesome 4.7.0
+* Custom reset.css
 
 ## Get started
 
