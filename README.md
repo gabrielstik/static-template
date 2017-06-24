@@ -20,6 +20,8 @@ You should use it for a simple HTML website, or as a template for a PHP website.
 * Font-Awesome 4.7.0
 * Custom reset.css
 
+& more features coming soon!
+
 ## Get started
 
 You need [Node.js](https://nodejs.org/en/) to use this template.
