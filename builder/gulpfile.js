@@ -37,15 +37,15 @@ gulp.task('styles', () => {
   .pipe(gulp.dest(`${config.assets}css`))
 })
 
-// Concat, minify & babel (ES6 to ES5)
+// Concat, minify & babel
 gulp.task('scripts', () => {
   return gulp.src(`${config.src}scripts/*.js`)
-  .pipe(gulp_plumber({errorHandler: gulp_notify.onError("Scripts error: <%= error.message %>")}))
-  .pipe(gulp_sourcemaps.init())
-  .pipe(gulp_concat('main.min.js'))
-  .pipe(gulp_sourcemaps.write())
-  .pipe(gulp_babel({presets: ['es2015']}))
-  .pipe(gulp_uglify())
+  .pipe(gulp_sourcemaps.init())  
+  .pipe(gulp_plumber({ errorHandler: gulp_notify.onError("Scripts error: <%= error.message %>") }))  
+  .pipe(gulp_concat('main.min.js'))  
+  .pipe(gulp_babel({presets: ["babel-preset-es2015"].map(require.resolve)}))
+  .pipe(gulp_uglify())  
+  .pipe(gulp_sourcemaps.write())  
   .pipe(gulp.dest(`${config.assets}js`))
 })
 
