@@ -4,7 +4,7 @@ const gulp = require('gulp'),
 	gulp_plumber = require ('gulp-plumber'),
 	gulp_sourcemaps = require ('gulp-sourcemaps'),
 	gulp_notify = require('gulp-notify'),
-	// Hypertext 
+	// index 
 	gulp_pug = require('gulp-pug'),
 	// CSS/SCSS dependencies
 	gulp_autoprefixer = require ('gulp-autoprefixer'),
@@ -54,22 +54,33 @@ gulp.task('scripts', () => {
 		.pipe(gulp.dest(`${config.assets}js`))
 })
 
-gulp.task('hypertext', () => {
+gulp.task('index', () => {
 	gulp
-		.src(`${config.src}**/*.pug`)
+		.src(`${config.src}index.pug`)
+		.pipe(gulp_plumber({errorHandler: gulp_notify.onError('Pug error:  <%= error.message %>')}))
 		.pipe(gulp_pug())
 		.pipe(gulp.dest(`${config.dist}`))  
+})
+
+gulp.task('views', () => {
+	gulp
+		.src(`${config.src}views/*.pug`)
+		.pipe(gulp_plumber({errorHandler: gulp_notify.onError('Pug error:  <%= error.message %>')}))
+		.pipe(gulp_pug())
+		.pipe(gulp.dest(`${config.dist}views`))  
 })
 
 gulp.task('fonts', () => {
 	gulp
 		.src(`${config.src}fonts/*`)
+		.pipe(gulp_plumber({errorHandler: gulp_notify.onError('Fonts error:  <%= error.message %>')}))
 		.pipe(gulp.dest(`${config.assets}fonts`))
 })
 
 gulp.task('images', () => {
 	gulp
 		.src(`${config.src}images/*`)
+		.pipe(gulp_plumber({errorHandler: gulp_notify.onError('Image error:  <%= error.message %>')}))
 		.pipe(gulp_imagemin([
 			gulp_imagemin.gifsicle({interlaced: true}),
 			gulp_imagemin.jpegtran({progressive: true}),
@@ -83,7 +94,7 @@ gulp.task('images', () => {
 		], {
 			verbose: true
 		}))
-		.pipe(gulp.dest(`${config.assets}img/src`)) 
+		.pipe(gulp.dest(`${config.assets}images/src`)) 
 })
 
 // Manual function
@@ -93,14 +104,15 @@ gulp.task('clean', () => {
 })
 
 gulp.task('srcset', () => {
-	return gulp.src(`${config.src}images/src/*.{png, jpg}`)
+	return gulp.src(`${config.assets}images/src/*`)
+		.pipe(gulp_plumber({errorHandler: gulp_notify.onError('Srcset error:  <%= error.message %>')}))	
 		.pipe(gulp_responsive({
 			'*': [
-				{ width: 350, rename: { suffix: '@350w' }, },
-				{ width: 560, rename: { suffix: '@560w' }, },
-				{ width: 720, rename: { suffix: '@720w' }, },
-				{ width: 1280, rename: { suffix: '@1280w' }, },
-				{ width: 1920, rename: { suffix: '@1920w' }, },
+				{ width: 340, rename: { suffix: '@340' }, },
+				{ width: 560, rename: { suffix: '@560' }, },
+				{ width: 720, rename: { suffix: '@72w' }, },
+				{ width: 1280, rename: { suffix: '@1280' }, },
+				{ width: 1920, rename: { suffix: '@1920' }, },
 				{ rename: { suffix: '-full' }, }], 
 		}, {
 			quality: 70,
@@ -111,8 +123,9 @@ gulp.task('srcset', () => {
 })
 
 // Wath changes
-gulp.task('watch', ['hypertext', 'styles', 'scripts', 'images', 'fonts'], () => {
-  gulp.watch(`${config.src}**/*.pug`, ['hypertext'])
+gulp.task('watch', ['index', 'styles', 'scripts', 'images', 'fonts'], () => {
+	gulp.watch(`${config.src}index.pug`, ['index'])
+	gulp.watch(`${config.src}views/**/*.pug`, ['views'])
 	gulp.watch(`${config.src}styles/**/*.scss`, ['styles'])
 	gulp.watch(`${config.src}scripts/**/*.js`, ['scripts'])
 	gulp.watch(`${config.src}images/**/*`, ['images'])
